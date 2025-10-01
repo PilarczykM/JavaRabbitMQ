@@ -1,5 +1,6 @@
 package dev.pilarczykm.rabbitmq_publisher.controller;
 
+import dev.pilarczykm.rabbitmq_publisher.dto.OrderRequest;
 import dev.pilarczykm.rabbitmq_publisher.service.OrderPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,8 @@ public class OrderController {
     private final OrderPublisher orderPublisher;
 
     @RequestMapping
-    public ResponseEntity<String> createOrder(@RequestBody String product) {
-        orderPublisher.sendOrder(product);
+    public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest) {
+        orderPublisher.sendOrder(orderRequest);
         return ResponseEntity.ok("Order successfully placed.");
     }
 }
