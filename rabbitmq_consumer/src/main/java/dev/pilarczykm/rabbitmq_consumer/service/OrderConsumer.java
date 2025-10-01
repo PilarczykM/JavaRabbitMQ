@@ -8,8 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderConsumer {
 
-    @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
-    public void processOrder(Order order) {
-        System.out.println("Processing order: " + order);
+    @RabbitListener(queues = RabbitMQConfig.PREMIUM_QUEUE)
+    public void processPremiumOrder(Order order) {
+        System.out.println("Processing PREMIUM order: " + order);
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.STANDARD_QUEUE)
+    public void processStandardOrder(Order order) {
+        System.out.println("Processing STANDARD order: " + order);
     }
 }

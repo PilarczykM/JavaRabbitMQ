@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String QUEUE_NAME = "order-queue";
+    public static final String PREMIUM_QUEUE = "premium-order-queue";
+    public static final String STANDARD_QUEUE = "standard-order-queue";
 
     @Bean
     public MessageConverter messageConverter() {
