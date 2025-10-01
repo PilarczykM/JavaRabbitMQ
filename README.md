@@ -10,13 +10,13 @@ This project demonstrates a simple publisher-consumer pattern using Java, Spring
 ### `rabbitmq_publisher`
 *   **Purpose:** A Spring Boot web application that acts as a message publisher.
 *   **Technology:** Java 17, Spring Boot, Maven.
-*   **Functionality:** Exposes a REST endpoint at `/orders`. When it receives a POST request with a product name, it creates an `Order` object and sends it to the `order-queue` in RabbitMQ.
+*   **Functionality:** Exposes a REST endpoint at `/orders`. When it receives a POST request with a product name and an order type (`standard` or `premium`), it creates an `Order` object and sends it to the appropriate queue (`standard-order-queue` or `premium-order-queue`) in RabbitMQ using a direct exchange.
 *   **Key Libraries:** `spring-boot-starter-web`, `spring-boot-starter-amqp`, `lombok`.
 
 ### `rabbitmq_consumer`
 *   **Purpose:** A Spring Boot application that acts as a message consumer.
 *   **Technology:** Java 17, Spring Boot, Maven.
-*   **Functionality:** Listens to the `order-queue` on RabbitMQ. When a message arrives, it deserializes the `Order` object and prints it to the console.
+*   **Functionality:** Listens to both the `standard-order-queue` and `premium-order-queue` on RabbitMQ. When a message arrives, it deserializes the `Order` object and prints it to the console, indicating whether it's a standard or premium order.
 *   **Key Libraries:** `spring-boot-starter-amqp`, `lombok`.
 
 ## Build and Run
@@ -51,6 +51,12 @@ java -jar rabbitmq_publisher/target/rabbitmq_publisher-0.0.1-SNAPSHOT.jar
 
 Once both applications are running, you can send a `POST` request to the publisher to create an order, which will then be consumed and logged by the consumer.
 
+**Standard Order**
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '"MyNewProduct"' http://localhost:8080/orders
+curl -X POST -H "Content-Type: application/json" -d '{"orderType": "standard", "product": "MyStandardProduct"}' http://localhost:8080/orders
+```
+
+**Premium Order**
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"orderType": "premium", "product": "MyPremiumProduct"}' http://localhost:8080/orders
 ```
